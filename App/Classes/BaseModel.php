@@ -1,7 +1,5 @@
 <?php
 namespace App\Classes;
-// use App\DataBase\db;
-
 abstract class BaseModel {
 
     private   $host   = "localhost";
@@ -10,6 +8,7 @@ abstract class BaseModel {
     private   $pass   = ""; 
     protected $con ;
 
+    # Connection
     public function __construct()
     {
         try {
@@ -19,34 +18,15 @@ abstract class BaseModel {
             die ("Connection Failed : " . $e->getMessage() );
         }
     }
-    
-    // public function connect()
-    // {
-    //     $this->con = new db() ;
-    //     $this->dbObj = $this->con->connection() ;
-    // }
 
-//     protected $table  ;
-//     protected $key  ;
-//     protected $data  ;
-
-
-//     public function selectQuery()
-//     {        
-//         $sql   = "SELECT * FROM {$this->table}  ";
-//         $query = $this->con->prepare($sql);
-//         $query->execute();
-//         $row = $query->fetchAll(\PDO::FETCH_OBJ);
-//         return $row ;
-//     }
-    
+    #Abstract method
+    public abstract function selectQuery();
         
-//     public abstract function insertQuery();
+    public abstract function insertQuery();
+    
+    public abstract function deleteQuery();
         
-    
-
-
-    
-
+    public abstract function updateQuery();
+        
  }
 
