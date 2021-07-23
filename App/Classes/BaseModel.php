@@ -24,9 +24,9 @@ abstract class BaseModel {
         
     public abstract function insertQuery();
     
-    public abstract function deleteQuery();
+    public abstract function deleteQuery($id);
         
-    public abstract function updateQuery();
+    public abstract function updateQuery($id);
         
  }
 
