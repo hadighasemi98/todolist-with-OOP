@@ -23,8 +23,8 @@ class Folders extends BaseModel
         $sql   = "INSERT INTO `$this->table` (`name`,`user_id`) VALUES (:name,:user_id) ";
         $query = $this->con->prepare($sql);
         $query->execute([':name'=>$_POST['folderName'],':user_id'=>1]);
-        $row = $query->rowCount();
-        return $row;
+        // $row = $query->rowCount();
+        // return $row;
             
         }
 

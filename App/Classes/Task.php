@@ -62,8 +62,8 @@ class Task extends BaseModel
         $sql   = "INSERT INTO {$this->table} (`name`,`folder_id`) VALUES (:name,:folder_id ) ";
         $query = $this->con->prepare($sql);
         $query->execute([':name'=>$_POST['TaskName'],':folder_id'=>$_POST['folderId']]);
-        $row = $query->rowCount();
-        return $row;
+        // $row = $query->rowCount();
+        // return $row;
     }
     
     public function deleteQuery($id)

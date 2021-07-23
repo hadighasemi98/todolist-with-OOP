@@ -7,29 +7,28 @@ use App\Classes\Task;
 $Tasks = new Task();
 $Folders = new Folders();
 
-if(isset($_POST['action']) && $_POST['action'] == 'viewFolders'  )
+$action = $_POST['action'] ;
+
+if(isset($action) && $action == 'viewFolders' )
 {
 
-      if(!$Folders->selectQuery() < 1 ){ 
-           foreach ($Folders->selectQuery() as $folder) : 
-           echo "
-           <li class= ''  >
-           <a href='?folder_id=$folder->id'>
-           <i class='fa fa-folder'></i>
-              <span>$folder->name </span>
-                <a href='' class='remove' id='$folder->id' onclick='return confirm(Are You sure to Delete This Item ?);'> x </a>
-            </li>
-            </a>";
-           endforeach; 
-
-           }else{echo ' There is no Folder here ... ';} 
-
-           // Get Done Tasks or Pending Tasks
-           
+    if(!$Folders->selectQuery() < 1 ){ 
+         foreach ($Folders->selectQuery() as $folder) : 
+         echo "
+         <li class= ''  >
+         <a href='?folder_id=$folder->id'>
+         <i class='fa fa-folder'></i>
+          <span>$folder->name </span>
+          <a href='' class='remove' id='$folder->id' onclick='return confirm(Are You sure to Delete This Item ?);'> x </a>
+          </li>
+          </a>";
+         endforeach; 
+  
+         }else{echo ' There is no Folder here ... ';} 
+   
 }
 
-if (isset($_POST['action']) && $_POST['action'] == 'viewTasks') {
-     
+if (isset($action) && $action == 'viewTasks') {
     if (!$Tasks->selectQuery() < 1) {
         foreach ($Tasks->selectQuery() as $task) :
           echo"<li class=";
@@ -44,58 +43,60 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewTasks') {
           </div>
           </li>";
         endforeach;
-    }else {
+    } else {
         echo ' There is no Task here ... ';
     }
-
 }
 
-if(isset($_POST['action']) && $_POST['action'] == 'insertFolders'  )
+if(isset($action) && $action == 'insertFolders'  )
 {
   $folderName = $_POST['folderName'];
+  // Refactor the if statement
+  echo !empty($folderName) ? $Folders->insertQuery() : 'Warning : Folder name should not be empty';
 
-  if ($folderName == 0) {
-      echo("Warning : Folder name should not be empty ") ;
-  }else{
-    $Folders->insertQuery();
-  }
+  # Just do the task without clean code
+  // if ($folderName == 0) {
+  //     echo("Warning : Folder name should not be empty ") ;
+  // }else{
+  //   $Folders->insertQuery();
+  // }
 }
 
-if (isset($_POST['action']) && $_POST['action'] == 'insertTask') 
+if (isset($action) && $action == 'insertTask') 
 {
     $folderId = $_POST['folderId'];
     $TaskName = $_POST['TaskName'];
+
+    # Refactor the if statement
+    echo 
+      empty($folderId) ? "Warning : Choose a Folder " : 
+     (empty($TaskName) ? "Warning : Task should not be empty " : $Tasks->insertQuery()) 
+    ;
+
+    # Just do the task without clean code
+    // if ($folderId == 0) {
+    //   echo("Warning : Choose a Folder ") ;
+    // }elseif(empty($TaskName)){
+    //   echo("Warning : Task should not be empty ") ;
+    // }else{
+    //   $Tasks->insertQuery();
+    // }
     
-    if ($folderId == 0) {
-      echo("Warning : Choose a Folder ") ;
-    }elseif(empty($TaskName)){
-      echo("Warning : Task should not be empty ") ;
-    }else{
-      $Tasks->insertQuery();
-    }
-    
 }
 
 
-if(isset($_POST['action']) && $_POST['action'] == 'deleteTask'  )
-{
-      $id = $_POST['deleteBtn'];
-      $Tasks->deleteQuery($id);
+  #$action == 'deleteTask'
+  $id = $_POST['deleteBtn'] ?? null;
+  $action == "deleteTask" ? $Tasks->deleteQuery($id) : '' ;
 
-}
+  #$action == 'deleteFolder'
+  $id = $_POST['deleteBtn'];
+  $action == 'deleteFolder' ? $Folders->deleteQuery($id) : '' ;
 
-if(isset($_POST['action']) && $_POST['action'] == 'deleteFolder'  )
-{
-      $id = $_POST['deleteBtn'];
-       $Folders->deleteQuery($id);
+  #$action == 'updateDone'
+  $id = $_POST['updateBtn'];
+  $action == 'updateDone' ? $Tasks->updateQuery($id) : '';
 
-}
 
-if(isset($_POST['action']) && $_POST['action'] == 'updateDone'  )
-{
-      $id = $_POST['updateBtn'];
-      $Tasks->updateQuery($id);
-
-}
 
 
