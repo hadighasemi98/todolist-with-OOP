@@ -1,9 +1,8 @@
 <?php
 namespace App\Classes;
-
 class Task extends BaseModel
 {
-    // Properties
+    # Properties
     protected $table = "task"  ;
     protected $key = "status=1-status"  ; // Dynamic Update Switch
 
@@ -12,51 +11,36 @@ class Task extends BaseModel
     private $start ;
     private $page  ;
     private $pageSize ;
-    
-    // Method
-    //OverRidding
+
+    # Method
+    # OverRidding
     public function selectQuery()
     {
-        // $this->where ='';
-        $this->limit ='LIMIT 7';
+        $this->limit    ='LIMIT 7';
         $this->page     = $_POST['page']      ?? null ;
         $this->pageSize = $_POST['page_size'] ?? null ;
 
         // Select Folder
-        if($_POST['folderId'] ?? null)
-        {
-            $this->where = "WHERE folder_id = $_POST[folderId]";
-        }
+        !empty($_POST['folderId']) ? $this->where = "WHERE folder_id = $_POST[folderId]" : null ;   
 
         // Get Done Or Pending Task
-        if( ($_POST['pending'] ?? null) || ($_POST['done'] ?? null ) )
-        {
-            $this->where = $_POST['pending'] ? "WHERE status = 0" : "WHERE status = 1 ";
-        }
+        $_POST['pending'] ? $this->where="WHERE status = 0" : ($_POST['done'] ? $this->where="WHERE status = 1" : null);
         
-        // Search
-        // if(isset($_POST['sub']) )
-        // {
-        //     // echo $_POST['searchInput'];
-        //      $this->where = "WHERE name LIKE 1 ";
-        // }
-
         // Pagination
         if(($_POST['page'] ?? null) && ($_POST['page_size']))
         {
             $this->start = ($this->page-1 ) * ($this->pageSize) ;
             $this->limit = "LIMIT $this->start,$this->pageSize ";
         }
-
         
-        // Query
+        # Query to DB
         $sql   = "SELECT * FROM {$this->table} {$this->where}  order by `created_at` desc {$this->limit} ";
         $query = $this->con->prepare($sql);
         $query->execute();
         return $query->fetchAll(\PDO::FETCH_OBJ);        
     }
 
-    //OverRidding
+    # OverRidding
     public function insertQuery()
     {
         $sql   = "INSERT INTO {$this->table} (`name`,`folder_id`) VALUES (:name,:folder_id ) ";
@@ -65,24 +49,6 @@ class Task extends BaseModel
         // $row = $query->rowCount();
         // return $row;
     }
-    
-    public function deleteQuery($id)
-    {            
-        $sql   = "DELETE FROM `$this->table` WHERE id =:id ";
-        $query =  $this->con->prepare($sql);
-        $query->execute([':id'=>$id]);
-        $row = $query->rowCount();
-        return $row;
-    }
-
-    public function updateQuery($id)
-        {
-            $sql   = "UPDATE {$this->table} SET {$this->key} WHERE id =:id";
-            $query = $this->con->prepare($sql);
-            $query->execute([':id'=>$id]);
-            $row = $query->rowCount();
-            return $row;
-        }
 
 }
 

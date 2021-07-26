@@ -51,7 +51,8 @@ if (isset($action) && $action == 'viewTasks') {
 if(isset($action) && $action == 'insertFolders'  )
 {
   $folderName = $_POST['folderName'];
-  // Refactor the if statement
+
+  # Refactor the if statement
   echo !empty($folderName) ? $Folders->insertQuery() : 'Warning : Folder name should not be empty';
 
   # Just do the task without clean code
@@ -68,9 +69,8 @@ if (isset($action) && $action == 'insertTask')
     $TaskName = $_POST['TaskName'];
 
     # Refactor the if statement
-    echo 
-      empty($folderId) ? "Warning : Choose a Folder " : 
-     (empty($TaskName) ? "Warning : Task should not be empty " : $Tasks->insertQuery()) 
+    echo empty($folderId) ? "Warning : Choose a Folder " : 
+        (empty($TaskName) ? "Warning : Task should not be empty " : $Tasks->insertQuery()) 
     ;
 
     # Just do the task without clean code
@@ -85,16 +85,16 @@ if (isset($action) && $action == 'insertTask')
 }
 
 
-  #$action == 'deleteTask'
+  # action == 'deleteTask'
   $id = $_POST['deleteBtn'] ?? null;
   $action == "deleteTask" ? $Tasks->deleteQuery($id) : '' ;
 
-  #$action == 'deleteFolder'
-  $id = $_POST['deleteBtn'];
+  # action == 'deleteFolder'
+  $id = $_POST['deleteBtn'] ?? null;
   $action == 'deleteFolder' ? $Folders->deleteQuery($id) : '' ;
 
-  #$action == 'updateDone'
-  $id = $_POST['updateBtn'];
+  # action == 'updateDone'
+  $id = $_POST['updateBtn'] ?? null;
   $action == 'updateDone' ? $Tasks->updateQuery($id) : '';
 
 
