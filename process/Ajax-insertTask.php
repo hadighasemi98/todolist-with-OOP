@@ -9,9 +9,9 @@ $Folders = new Folders();
 
 $action = $_POST['action'] ;
 
+# Without clean code
 if(isset($action) && $action == 'viewFolders' )
 {
-
     if(!$Folders->selectQuery() < 1 ){ 
          foreach ($Folders->selectQuery() as $folder) : 
          echo "
@@ -27,7 +27,7 @@ if(isset($action) && $action == 'viewFolders' )
          }else{echo ' There is no Folder here ... ';} 
    
 }
-
+# Without clean code
 if (isset($action) && $action == 'viewTasks') {
     if (!$Tasks->selectQuery() < 1) {
         foreach ($Tasks->selectQuery() as $task) :

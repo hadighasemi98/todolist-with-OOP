@@ -20,13 +20,13 @@ class Task extends BaseModel
         $this->page     = $_POST['page']      ?? null ;
         $this->pageSize = $_POST['page_size'] ?? null ;
 
-        // Select Folder
+        # Select Folder
         !empty($_POST['folderId']) ? $this->where = "WHERE folder_id = $_POST[folderId]" : null ;   
 
-        // Get Done Or Pending Task
+        # Get Done Or Pending Task
         $_POST['pending'] ? $this->where="WHERE status = 0" : ($_POST['done'] ? $this->where="WHERE status = 1" : null);
         
-        // Pagination
+        # Pagination
         if(($_POST['page'] ?? null) && ($_POST['page_size']))
         {
             $this->start = ($this->page-1 ) * ($this->pageSize) ;
